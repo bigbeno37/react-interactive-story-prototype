@@ -9,4 +9,4 @@ export const Dialogue = ({ name, text, align }: DialogueProps) => (
 		<h1 className="text-gray-300 italic text-2xl">{name}</h1>
 		<p>{text}</p>
 	</div>
-)
+);

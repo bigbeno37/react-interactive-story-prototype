@@ -1,5 +1,5 @@
 import {Dialogue} from "./Dialogue";
-import {Choices} from "./TwoChoices";
+import {Choices} from "./Choices";
 
 export const App = () => {
 	return <div className="h-full flex flex-col bg-gray-800">

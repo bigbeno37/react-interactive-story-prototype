@@ -1,15 +1,14 @@
 import {Dialogue} from './Dialogue';
 import {Choices} from './Choices';
 import {engine} from '../Engine';
-import {useEffect, useMemo, useState} from 'react';
-import {Event} from '../Engine';
+import {useEffect, useState} from 'react';
 
 export const App = () => {
-	const [dialogue, setDialogue] = useState<Event[]>([]);
+	const [dialogue, setDialogue] = useState(engine.dialogue);
 
 	useEffect(() => {
 		const listener = () => {
-			setDialogue([...engine.events]);
+			setDialogue([...engine.dialogue]);
 		};
 
 		engine.onEventDispatch(listener);

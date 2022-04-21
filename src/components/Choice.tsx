@@ -1,11 +1,15 @@
+import {CHOICES} from '../story/chapter1';
+
 type ChoiceProps = {
-	text: string
+	choice: string,
+	selectChoice: (choice: keyof typeof CHOICES) => void
 };
 
-export const Choice = ({ text }: ChoiceProps) => {
+export const Choice = ({ choice, selectChoice }: ChoiceProps) => {
 	return <button
 		className="text-white w-2/5 bg-gray-700 m-2 text-2xl"
+		onClick={() => selectChoice(choice)}
 	>
-		{ text }
+		{ CHOICES[choice].text }
 	</button>;
 };

@@ -4,6 +4,7 @@ import {GameChoice} from '../types/GameChoice';
 
 export const InitialOutcome: Outcome = function* () {
 	yield dialogue('John', 'Hey there!');
+	yield wait(1000);
 	yield dialogue('John', 'How are you?');
 	yield choices(SayHiChoice, WhatDoYouWantChoice);
 };
@@ -23,12 +24,12 @@ const SayHiChoice: GameChoice = {
 	outcome: SayHiOutcome
 };
 
-export const WhatDoYouWantOutcome: Outcome = function* () {
+const WhatDoYouWantOutcome: Outcome = function* () {
 	yield dialogue('You', 'What? What do you want?');
 	yield dialogue('John', 'Woah, hey, relax bud. I\'m not going to bite.');
 };
 
-export const WhatDoYouWantChoice: GameChoice = {
+const WhatDoYouWantChoice: GameChoice = {
 	text: 'What do you want?',
 	effects(state) {
 		state.John.friendliness -= 1;

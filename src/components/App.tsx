@@ -6,7 +6,7 @@ import {Event, ShowChoicesEvent, ShowDialogueEvent} from '../types/Event';
 import {Milliseconds} from '../types/utils';
 import {Outcome} from '../Outcome';
 
-const CURRENT_VERSION = 'v0.1.0';
+const CURRENT_VERSION = 'v0.2.0';
 
 const pause = (duration: Milliseconds) => new Promise(resolve => setTimeout(resolve, duration));
 
@@ -51,6 +51,8 @@ const useEngine = (initialOutcome: Outcome): [ShowDialogueEvent[], ShowChoicesEv
 				}
 
 				setEvents(currentEvents => [...currentEvents, event]);
+
+				await pause(1000);
 			}
 
 			running.current = false;

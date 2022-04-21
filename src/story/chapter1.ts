@@ -3,7 +3,6 @@ import {Outcome, wait} from '../Outcome';
 
 export const InitialOutcome: Outcome = function* () {
 	yield dialogue('John', 'Hey there!');
-	yield wait(2000);
 	yield dialogue('John', 'How are you?');
 	yield choices('SayHiChoice', 'WhatDoYouWantChoice');
 };
@@ -24,6 +23,9 @@ const SayHiChoice: Choice = {
 
 export const SayHiOutcome: Outcome = function* () {
 	yield dialogue('You', 'Hi');
+	yield dialogue('John', 'Soooo...');
+	yield wait(2000);
+	yield dialogue('John', 'Nice weather outside, hey?');
 };
 
 export const WhatDoYouWantChoice: Choice = {
@@ -36,6 +38,7 @@ export const WhatDoYouWantChoice: Choice = {
 
 export const WhatDoYouWantOutcome: Outcome = function* () {
 	yield dialogue('You', 'What? What do you want?');
+	yield dialogue('John', 'Woah, hey, relax bud. I\'m not going to bite.');
 };
 
 export const OUTCOMES = {

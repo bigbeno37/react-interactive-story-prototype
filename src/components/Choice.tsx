@@ -1,8 +1,8 @@
-import {CHOICES} from '../story/chapter1';
+import {GameChoice} from '../types/GameChoice';
 
 type ChoiceProps = {
-	choice: keyof typeof CHOICES,
-	selectChoice: (choice: keyof typeof CHOICES) => void
+	choice: GameChoice,
+	selectChoice: (choice: GameChoice) => void
 };
 
 export const Choice = ({ choice, selectChoice }: ChoiceProps) => {
@@ -10,6 +10,6 @@ export const Choice = ({ choice, selectChoice }: ChoiceProps) => {
 		className="text-white w-[45%] bg-gray-700 m-2 text-2xl"
 		onClick={() => selectChoice(choice)}
 	>
-		{ (CHOICES[choice] ?? { text: `${choice} is not listed in CHOICES!` }).text }
+		{ choice.text }
 	</button>;
 };

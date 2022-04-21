@@ -1,4 +1,4 @@
-import {CHOICES} from '../story/chapter1';
+import {GameChoice} from './GameChoice';
 
 export type ShowDialogueEvent = {
 	type: 'SHOW_DIALOGUE',
@@ -14,10 +14,10 @@ export const dialogue = (name: string, text: string): ShowDialogueEvent => ({
 
 export type ShowChoicesEvent = {
 	type: 'SHOW_CHOICES',
-	choices: Array<keyof typeof CHOICES>
+	choices: Array<GameChoice>
 };
 
-export const choices = (...choices: Array<keyof typeof CHOICES>): ShowChoicesEvent => ({
+export const choices = (...choices: Array<GameChoice>): ShowChoicesEvent => ({
 	type: 'SHOW_CHOICES',
 	choices
 });

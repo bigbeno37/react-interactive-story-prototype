@@ -1,13 +1,18 @@
 import {Choice} from './Choice';
-import {CHOICES} from '../story/chapter1';
+import {GameChoice} from '../types/GameChoice';
 
 type ChoicesProps = {
-	choices: Array<keyof typeof CHOICES>,
-	selectChoice: (choice: keyof typeof CHOICES) => void
+	choices: GameChoice[] | undefined,
+	selectChoice: (choice: GameChoice) => void
 };
 
 export const Choices = ({ choices, selectChoice }: ChoicesProps) => (
-	<div className={`${choices.length === 2 ? 'h-32' : 'h-64'} shrink-0 flex flex-wrap flex-row justify-center`}>
-		{ choices.map((choice, index) => ( <Choice key={`${choice}${index}`} choice={choice} selectChoice={selectChoice} /> )) }
+	<div style={{ position: 'relative', top: choices ? '0' : '100px', transition: 'all 0.3s ease-out' }}>
+		{ choices && (
+			<div className={`${choices.length === 2 ? 'h-32' : 'h-64'} shrink-0 flex flex-wrap flex-row justify-center`}>
+				{ choices.map((choice, index) => ( <Choice key={`${choice}${index}`} choice={choice} selectChoice={selectChoice} /> )) }
+			</div>
+		) }
 	</div>
+
 );

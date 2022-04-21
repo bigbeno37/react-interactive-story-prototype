@@ -1,24 +1,11 @@
 import {choices, dialogue} from '../types/Event';
 import {Outcome, wait} from '../Outcome';
+import {GameChoice} from '../types/GameChoice';
 
 export const InitialOutcome: Outcome = function* () {
 	yield dialogue('John', 'Hey there!');
 	yield dialogue('John', 'How are you?');
-	yield choices('SayHiChoice', 'WhatDoYouWantChoice');
-};
-
-type Choice = {
-	text: string,
-	effects: (state: object) => void,
-	outcome: keyof typeof OUTCOMES
-}
-
-const SayHiChoice: Choice = {
-	text: 'Say hi',
-	effects(state) {
-		//
-	},
-	outcome: 'SayHiOutcome'
+	yield choices(SayHiChoice, WhatDoYouWantChoice);
 };
 
 export const SayHiOutcome: Outcome = function* () {
@@ -28,12 +15,12 @@ export const SayHiOutcome: Outcome = function* () {
 	yield dialogue('John', 'Nice weather outside, hey?');
 };
 
-export const WhatDoYouWantChoice: Choice = {
-	text: 'What do you want?',
+const SayHiChoice: GameChoice = {
+	text: 'Say hi',
 	effects(state) {
-		//
+		state.John.friendliness += 1;
 	},
-	outcome: 'WhatDoYouWantOutcome'
+	outcome: SayHiOutcome
 };
 
 export const WhatDoYouWantOutcome: Outcome = function* () {
@@ -41,13 +28,10 @@ export const WhatDoYouWantOutcome: Outcome = function* () {
 	yield dialogue('John', 'Woah, hey, relax bud. I\'m not going to bite.');
 };
 
-export const OUTCOMES = {
-	InitialOutcome,
-	SayHiOutcome,
-	WhatDoYouWantOutcome
-};
-
-export const CHOICES = {
-	SayHiChoice,
-	WhatDoYouWantChoice
+export const WhatDoYouWantChoice: GameChoice = {
+	text: 'What do you want?',
+	effects(state) {
+		state.John.friendliness -= 1;
+	},
+	outcome: WhatDoYouWantOutcome
 };

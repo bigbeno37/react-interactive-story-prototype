@@ -1,40 +1,37 @@
 import {Dialogue} from './Dialogue';
 import {Choices} from './Choices';
 import {useEffect, useMemo, useRef, useState} from 'react';
-import {CHOICES, InitialOutcome, OUTCOMES} from '../story/chapter1';
+import {InitialOutcome} from '../story/chapter1';
 import {Event, ShowChoicesEvent, ShowDialogueEvent} from '../types/Event';
 import {Milliseconds} from '../types/utils';
 import {Outcome} from '../Outcome';
+import {GameChoice} from '../types/GameChoice';
 
-const CURRENT_VERSION = 'v0.2.0';
+const CURRENT_VERSION = 'v0.3.0';
 
 const pause = (duration: Milliseconds) => new Promise(resolve => setTimeout(resolve, duration));
 
-const useEngine = (initialOutcome: Outcome): [ShowDialogueEvent[], ShowChoicesEvent | undefined, (choice: keyof typeof CHOICES) => void] => {
+const useEngine = (initialOutcome: Outcome): [ShowDialogueEvent[], GameChoice[] | undefined, (choice: GameChoice) => void] => {
 	const [outcome, setOutcome] = useState(initialOutcome);
 
 	const [events, setEvents] = useState<Event[]>([]);
 
-	const selectChoice = (choice: keyof typeof CHOICES) => {
-		setOutcome(OUTCOMES[CHOICES[choice].outcome]);
+	const selectChoice = (choice: GameChoice) => {
+		setOutcome(choice.outcome);
 		setEvents(currentEvents => [...currentEvents, { type: 'HIDE_CHOICES' }]);
 	};
 
 	const dialogue = useMemo(() => events.filter(event => event.type === 'SHOW_DIALOGUE') as ShowDialogueEvent[], [events]);
-	const choices = useMemo(() => {
-		let choices = undefined;
+	const choices = useMemo(() => (events.reverse().find(event => event.type === 'SHOW_CHOICES') as ShowChoicesEvent | undefined)?.choices, [events]);
+	const showChoices = useMemo(() => {
+		let show = false;
 
 		for (const event of events) {
-			if (event.type === 'SHOW_CHOICES') {
-				choices = event;
-			}
-
-			if (event.type === 'HIDE_CHOICES') {
-				choices = undefined;
-			}
+			if (event.type === 'SHOW_CHOICES') show = true;
+			if (event.type === 'HIDE_CHOICES') show = false;
 		}
 
-		return choices;
+		return show;
 	}, [events]);
 
 	const running = useRef(false);
@@ -72,7 +69,7 @@ export const App = () => {
 				{ dialogue.reverse().map((event, index) => ( <Dialogue key={index} name={event.name} text={event.text} /> )) }
 			</div>
 
-			{ choices && <Choices choices={choices.choices} selectChoice={selectChoice} /> }
+			<Choices choices={choices} selectChoice={selectChoice} />
 		</div>
 	</div>;
 };

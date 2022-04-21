@@ -1,8 +1,10 @@
 import {Dialogue} from './Dialogue';
 import {Choices} from './Choices';
-import {Event, Milliseconds, Outcome, ShowChoicesEvent, ShowDialogueEvent} from '../Engine';
 import {useEffect, useMemo, useRef, useState} from 'react';
-import {CHOICES, INITIAL_OUTCOME, OUTCOMES} from '../story/chapter1';
+import {CHOICES, InitialOutcome, OUTCOMES} from '../story/chapter1';
+import {Event, ShowChoicesEvent, ShowDialogueEvent} from '../types/Event';
+import {Milliseconds} from '../types/utils';
+import {Outcome} from '../Outcome';
 
 const pause = (duration: Milliseconds) => new Promise(resolve => setTimeout(resolve, duration));
 
@@ -58,7 +60,7 @@ const useEngine = (initialOutcome: Outcome): [ShowDialogueEvent[], ShowChoicesEv
 };
 
 export const App = () => {
-	const [dialogue, choices, selectChoice] = useEngine(INITIAL_OUTCOME);
+	const [dialogue, choices, selectChoice] = useEngine(InitialOutcome);
 
 	return <div className="h-full flex flex-col bg-gray-800">
 		<div className="h-full self-center p-2 flex flex-col w-full xl:w-[1200px]">

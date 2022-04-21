@@ -1,14 +1,11 @@
-import {choices, dialogue, Outcome, wait} from '../Engine';
+import {choices, dialogue} from '../types/Event';
+import {Outcome, wait} from '../Outcome';
 
-export const INITIAL_OUTCOME: Outcome = function* () {
+export const InitialOutcome: Outcome = function* () {
 	yield dialogue('John', 'Hey there!');
 	yield wait(2000);
 	yield dialogue('John', 'How are you?');
-	yield choices('SAY_HI', 'SAY_HI');
-};
-
-export const OUTCOMES = {
-	INITIAL_OUTCOME
+	yield choices('SayHiChoice', 'WhatDoYouWantChoice');
 };
 
 type Choice = {
@@ -17,14 +14,37 @@ type Choice = {
 	outcome: keyof typeof OUTCOMES
 }
 
-const SAY_HI: Choice = {
+const SayHiChoice: Choice = {
 	text: 'Say hi',
 	effects(state) {
 		//
 	},
-	outcome: 'INITIAL_OUTCOME'
+	outcome: 'SayHiOutcome'
 };
 
-export const CHOICES: Record<string, Choice> = {
-	SAY_HI
+export const SayHiOutcome: Outcome = function* () {
+	yield dialogue('You', 'Hi');
+};
+
+export const WhatDoYouWantChoice: Choice = {
+	text: 'What do you want?',
+	effects(state) {
+		//
+	},
+	outcome: 'WhatDoYouWantOutcome'
+};
+
+export const WhatDoYouWantOutcome: Outcome = function* () {
+	yield dialogue('You', 'What? What do you want?');
+};
+
+export const OUTCOMES = {
+	InitialOutcome,
+	SayHiOutcome,
+	WhatDoYouWantOutcome
+};
+
+export const CHOICES = {
+	SayHiChoice,
+	WhatDoYouWantChoice
 };

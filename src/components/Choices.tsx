@@ -2,7 +2,7 @@ import {Choice} from './Choice';
 import {CHOICES} from '../story/chapter1';
 
 type ChoicesProps = {
-	choices: string[],
+	choices: Array<keyof typeof CHOICES>,
 	selectChoice: (choice: keyof typeof CHOICES) => void
 };
 

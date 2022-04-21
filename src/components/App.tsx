@@ -6,6 +6,8 @@ import {Event, ShowChoicesEvent, ShowDialogueEvent} from '../types/Event';
 import {Milliseconds} from '../types/utils';
 import {Outcome} from '../Outcome';
 
+const CURRENT_VERSION = 'v0.1.0';
+
 const pause = (duration: Milliseconds) => new Promise(resolve => setTimeout(resolve, duration));
 
 const useEngine = (initialOutcome: Outcome): [ShowDialogueEvent[], ShowChoicesEvent | undefined, (choice: keyof typeof CHOICES) => void] => {
@@ -37,7 +39,6 @@ const useEngine = (initialOutcome: Outcome): [ShowDialogueEvent[], ShowChoicesEv
 
 	const running = useRef(false);
 	useEffect(() => {
-		console.log('outcome is', outcome);
 		if (running.current) return;
 
 		running.current = true;
@@ -63,6 +64,7 @@ export const App = () => {
 	const [dialogue, choices, selectChoice] = useEngine(InitialOutcome);
 
 	return <div className="h-full flex flex-col bg-gray-800">
+		<p className="absolute text-gray-600 left-4 top-4">{ CURRENT_VERSION }</p>
 		<div className="h-full self-center p-2 flex flex-col w-full xl:w-[1200px]">
 			<div className="grow flex flex-col-reverse overflow-y-auto">
 				{ dialogue.reverse().map((event, index) => ( <Dialogue key={index} name={event.name} text={event.text} /> )) }

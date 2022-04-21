@@ -61,9 +61,9 @@ export const App = () => {
 	const [dialogue, choices, selectChoice] = useEngine(INITIAL_OUTCOME);
 
 	return <div className="h-full flex flex-col bg-gray-800">
-		<div className="h-full self-center p-2 flex flex-col" style={{width: '1200px'}}>
-			<div className="grow flex flex-col overflow-y-auto">
-				{ dialogue.map((event, index) => ( <Dialogue key={index} name={event.name} text={event.text} /> )) }
+		<div className="h-full self-center p-2 flex flex-col w-full xl:w-[1200px]">
+			<div className="grow flex flex-col-reverse overflow-y-auto">
+				{ dialogue.reverse().map((event, index) => ( <Dialogue key={index} name={event.name} text={event.text} /> )) }
 			</div>
 
 			{ choices && <Choices choices={choices.choices} selectChoice={selectChoice} /> }

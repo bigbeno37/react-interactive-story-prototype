@@ -7,7 +7,7 @@ import {Milliseconds} from '../types/utils';
 import {Outcome} from '../Outcome';
 import {GameChoice} from '../types/GameChoice';
 
-const CURRENT_VERSION = 'v0.5.1';
+const CURRENT_VERSION = 'v0.5.2';
 
 const pause = (duration: Milliseconds) => new Promise(resolve => setTimeout(resolve, duration));
 
@@ -74,11 +74,11 @@ export const App = () => {
 	return <div className="h-full flex flex-col bg-gray-800 overflow-y-hidden">
 		<p className="absolute text-gray-600 left-4 top-4">{ CURRENT_VERSION }</p>
 		<div className="h-full self-center p-2 flex flex-col w-full xl:w-[1200px]">
-			<div className="flex flex-col-reverse overflow-y-auto" style={{ height: showChoices ? 'calc(100%-32rem)' : '100%', transition: 'all 0.3s ease-out' }}>
+			<div className="flex flex-col-reverse overflow-y-auto transition-all duration-300" style={{ height: showChoices ? 'calc(100%-32rem)' : '100%' }}>
 				{ [...dialogue].reverse().map((event, index) => ( <Dialogue key={index} name={event.name} text={event.text} /> )) }
 			</div>
 
-			<div className={showChoices ? 'h-32' : 'h-0'} style={{transition: 'all 0.3s ease-out'}}>
+			<div className={`transition-all duration-300 ${showChoices ? 'h-32' : 'h-0'}`}>
 				{ choices && <Choices choices={choices} selectChoice={selectChoice} /> }
 			</div>
 		</div>

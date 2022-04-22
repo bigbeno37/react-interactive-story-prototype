@@ -2,29 +2,39 @@ import {Dialogue} from './Dialogue';
 import {Choices} from './Choices';
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {InitialOutcome} from '../story/chapter1';
-import {Event, ShowChoicesEvent, ShowDialogueEvent} from '../types/Event';
+import {Event, ShowDialogueEvent} from '../types/Event';
 import {Milliseconds} from '../types/utils';
 import {Outcome} from '../Outcome';
 import {GameChoice} from '../types/GameChoice';
 
-const CURRENT_VERSION = 'v0.5.0';
+const CURRENT_VERSION = 'v0.5.1';
 
 const pause = (duration: Milliseconds) => new Promise(resolve => setTimeout(resolve, duration));
 
 const useEngine = (initialOutcome: Outcome): [ShowDialogueEvent[], GameChoice[] | undefined, boolean, (choice: GameChoice) => void] => {
 	const [events, setEvents] = useState<Event[]>([]);
 
-	const dialogue = useMemo(() => events.filter(event => event.type === 'SHOW_DIALOGUE') as ShowDialogueEvent[], [events]);
-	const choices = useMemo(() => ([...events].reverse().find(event => event.type === 'SHOW_CHOICES') as ShowChoicesEvent | undefined)?.choices, [events]);
-	const showChoices = useMemo(() => {
-		let show = false;
+	const [dialogue, choices, showChoices] = useMemo(() => {
+		const dialogue: ShowDialogueEvent[] = [];
+		let choices: GameChoice[] | undefined = undefined;
+		let showChoices = false;
 
 		for (const event of events) {
-			if (event.type === 'SHOW_CHOICES') show = true;
-			if (event.type === 'HIDE_CHOICES') show = false;
+			switch (event.type) {
+			case 'SHOW_DIALOGUE':
+				dialogue.push(event);
+				break;
+			case 'SHOW_CHOICES':
+				choices = event.choices;
+				showChoices = true;
+				break;
+			case 'HIDE_CHOICES':
+				showChoices = false;
+				break;
+			}
 		}
-
-		return show;
+		
+		return [dialogue, choices, showChoices];
 	}, [events]);
 
 	const [outcome, setOutcome] = useState(initialOutcome);

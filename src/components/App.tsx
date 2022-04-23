@@ -4,9 +4,9 @@ import {InitialOutcome} from '../story/chapter1';
 import {useEngine} from '../hooks/UseEngine';
 import {InitialGameState} from '../types/GameState';
 
-const APP_VERSION = 'v0.6.3';
-const ENGINE_VERSION = 'v1.1.0';
-const STORY_VERSION = 'v0.2.0';
+const APP_VERSION = 'v0.7.0';
+const ENGINE_VERSION = 'v1.2.0';
+const STORY_VERSION = 'v0.3.0';
 
 export const App = () => {
 	const [dialogue, choices, showChoices, selectChoice] = useEngine(InitialOutcome, InitialGameState);

@@ -67,8 +67,13 @@ export const useEngine = <T,>(initialOutcome: Outcome<T>, initialState: T): [Dia
 
 	const selectChoice = (choice: GameChoice<T>) => {
 		setOutcome(choice.outcome);
-		setGameState(choice.effects(gameState));
-		setEvents([...events, dialogueEvent('You', choice.dialogue), {type: 'HIDE_CHOICES'}]);
+		if (choice.effects) setGameState(choice.effects(gameState));
+
+		const newEvents = [...events];
+		if (choice.dialogue) newEvents.push(dialogueEvent('You', choice.dialogue));
+		newEvents.push({ type: 'HIDE_CHOICES' });
+
+		setEvents(newEvents);
 	};
 
 	return [dialogue, choices, showChoices, selectChoice];

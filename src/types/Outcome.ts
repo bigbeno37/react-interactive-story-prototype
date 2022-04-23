@@ -1,5 +1,5 @@
-import {Event} from './types/Event';
-import {Milliseconds} from './types/utils';
+import {Event} from './Event';
+import {Milliseconds} from './UtilityTypes';
 
 export type WaitEvent = {
 	type: 'WAIT',
@@ -11,4 +11,4 @@ export const wait = (duration: Milliseconds): WaitEvent => ({
 	duration
 });
 
-export type Outcome = () => Generator<Event | WaitEvent, void>;
+export type Outcome<T> = (state: T) => () => Generator<Event<T> | WaitEvent, void>;

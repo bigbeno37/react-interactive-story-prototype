@@ -1,81 +1,19 @@
 import {Dialogue} from './Dialogue';
 import {Choices} from './Choices';
-import {useEffect, useMemo, useRef, useState} from 'react';
 import {InitialOutcome} from '../story/chapter1';
-import {Event, ShowDialogueEvent} from '../types/Event';
-import {Milliseconds} from '../types/utils';
-import {Outcome} from '../Outcome';
-import {GameChoice} from '../types/GameChoice';
+import {useEngine} from '../hooks/UseEngine';
+import {InitialGameState} from '../types/GameState';
 
-const CURRENT_VERSION = 'v0.5.4';
-
-const pause = (duration: Milliseconds) => new Promise(resolve => setTimeout(resolve, duration));
-
-const useEngine = (initialOutcome: Outcome): [{ id: number, event: ShowDialogueEvent }[], GameChoice[] | undefined, boolean, (choice: GameChoice) => void] => {
-	const [events, setEvents] = useState<Event[]>([]);
-
-	const [dialogue, choices, showChoices] = useMemo(() => {
-		const dialogue: { id: number, event: ShowDialogueEvent }[] = [];
-		let choices: GameChoice[] | undefined = undefined;
-		let showChoices = false;
-
-		for (const event of events) {
-			switch (event.type) {
-			case 'SHOW_DIALOGUE':
-				dialogue.push({ id: dialogue.length, event });
-				break;
-			case 'SHOW_CHOICES':
-				choices = event.choices;
-				showChoices = true;
-				break;
-			case 'HIDE_CHOICES':
-				showChoices = false;
-				break;
-			}
-		}
-		
-		return [dialogue, choices, showChoices];
-	}, [events]);
-
-	const [outcome, setOutcome] = useState(initialOutcome);
-	const selectChoice = (choice: GameChoice) => {
-		setOutcome(choice.outcome);
-		setEvents([...events, { type: 'HIDE_CHOICES' }]);
-	};
-
-	const running = useRef(false);
-	useEffect(() => {
-		if (running.current) return;
-
-		running.current = true;
-
-		(async () => {
-			for (const event of outcome) {
-				if (event.type === 'SHOW_DIALOGUE' && event.name !== 'You') await pause(1000);
-
-				if (event.type === 'WAIT') {
-					await pause(event.duration);
-					continue;
-				}
-
-				setEvents(currentEvents => [...currentEvents, event]);
-			}
-
-			running.current = false;
-		})();
-	}, [outcome]);
-
-	return [dialogue, choices, showChoices, selectChoice];
-};
+const CURRENT_VERSION = 'v0.6.0';
 
 export const App = () => {
-	const [dialogue, choices, showChoices, selectChoice] = useEngine(InitialOutcome);
+	const [dialogue, choices, showChoices, selectChoice] = useEngine(InitialOutcome, InitialGameState);
 
 	return <div className="h-full flex flex-col bg-gray-800 overflow-y-hidden">
 		<p className="absolute text-gray-600 left-4 top-4">{ CURRENT_VERSION }</p>
 		<div className="h-full self-center p-2 flex flex-col w-full xl:w-[1200px]">
 			<div className="flex flex-col-reverse overflow-y-auto" style={{ height: showChoices ? 'calc(100%-32rem)' : '100%' }}>
-				{ [...dialogue].reverse().map((event) => ( <Dialogue key={event.id} name={event.event.name} text={event.event.text} /> )) }
+				{ [...dialogue].reverse().map(({ id, event }) => ( <Dialogue key={id} name={event.name} text={event.text} /> )) }
 			</div>
 
 			<div className={`transition-all duration-300 ${showChoices ? 'h-32' : 'h-0'}`}>

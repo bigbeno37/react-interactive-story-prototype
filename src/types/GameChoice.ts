@@ -1,8 +1,7 @@
-import {GameState} from './GameState';
-import {Outcome} from '../Outcome';
+import {Outcome} from './Outcome';
 
-export type GameChoice = {
+export type GameChoice<T> = {
 	text: string,
-	effects: (state: GameState) => void,
-	outcome: Outcome
+	effects: (state: T) => T,
+	outcome: Outcome<T>
 }

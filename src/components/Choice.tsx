@@ -1,8 +1,9 @@
 import {GameChoice} from '../types/GameChoice';
+import {GameState} from '../types/GameState';
 
 type ChoiceProps = {
-	choice: GameChoice,
-	selectChoice: (choice: GameChoice) => void
+	choice: GameChoice<GameState>,
+	selectChoice: (choice: GameChoice<GameState>) => void
 };
 
 export const Choice = ({ choice, selectChoice }: ChoiceProps) => {

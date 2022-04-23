@@ -12,12 +12,12 @@ export const dialogue = (name: string, text: string): ShowDialogueEvent => ({
 	text
 });
 
-export type ShowChoicesEvent = {
+export type ShowChoicesEvent<T> = {
 	type: 'SHOW_CHOICES',
-	choices: Array<GameChoice>
+	choices: GameChoice<T>[]
 };
 
-export const choices = (...choices: Array<GameChoice>): ShowChoicesEvent => ({
+export const choices = <T>(...choices: Array<GameChoice<T>>): ShowChoicesEvent<T> => ({
 	type: 'SHOW_CHOICES',
 	choices
 });
@@ -26,4 +26,4 @@ export type HideChoicesEvent = {
 	type: 'HIDE_CHOICES'
 };
 
-export type Event = ShowDialogueEvent | ShowChoicesEvent | HideChoicesEvent;
+export type Event<T> = ShowDialogueEvent | ShowChoicesEvent<T> | HideChoicesEvent;

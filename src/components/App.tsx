@@ -7,22 +7,22 @@ import {Milliseconds} from '../types/utils';
 import {Outcome} from '../Outcome';
 import {GameChoice} from '../types/GameChoice';
 
-const CURRENT_VERSION = 'v0.5.2';
+const CURRENT_VERSION = 'v0.5.3';
 
 const pause = (duration: Milliseconds) => new Promise(resolve => setTimeout(resolve, duration));
 
-const useEngine = (initialOutcome: Outcome): [ShowDialogueEvent[], GameChoice[] | undefined, boolean, (choice: GameChoice) => void] => {
+const useEngine = (initialOutcome: Outcome): [{ id: number, event: ShowDialogueEvent }[], GameChoice[] | undefined, boolean, (choice: GameChoice) => void] => {
 	const [events, setEvents] = useState<Event[]>([]);
 
 	const [dialogue, choices, showChoices] = useMemo(() => {
-		const dialogue: ShowDialogueEvent[] = [];
+		const dialogue: { id: number, event: ShowDialogueEvent }[] = [];
 		let choices: GameChoice[] | undefined = undefined;
 		let showChoices = false;
 
 		for (const event of events) {
 			switch (event.type) {
 			case 'SHOW_DIALOGUE':
-				dialogue.push(event);
+				dialogue.push({ id: dialogue.length, event });
 				break;
 			case 'SHOW_CHOICES':
 				choices = event.choices;
@@ -75,7 +75,7 @@ export const App = () => {
 		<p className="absolute text-gray-600 left-4 top-4">{ CURRENT_VERSION }</p>
 		<div className="h-full self-center p-2 flex flex-col w-full xl:w-[1200px]">
 			<div className="flex flex-col-reverse overflow-y-auto transition-all duration-300" style={{ height: showChoices ? 'calc(100%-32rem)' : '100%' }}>
-				{ [...dialogue].reverse().map((event, index) => ( <Dialogue key={index} name={event.name} text={event.text} /> )) }
+				{ [...dialogue].reverse().map((event) => ( <Dialogue key={event.id} name={event.event.name} text={event.event.text} /> )) }
 			</div>
 
 			<div className={`transition-all duration-300 ${showChoices ? 'h-32' : 'h-0'}`}>

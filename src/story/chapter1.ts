@@ -10,7 +10,6 @@ export const InitialOutcome: MyGameOutcome = () => function* () {
 };
 
 export const SayHiOutcome: MyGameOutcome = () => function* () {
-	yield dialogue('You', 'Hi');
 	yield dialogue('John', 'Soooo...');
 	yield wait(2000);
 	yield dialogue('John', 'Nice weather outside, hey?');
@@ -18,6 +17,7 @@ export const SayHiOutcome: MyGameOutcome = () => function* () {
 
 const SayHiChoice: MyGameChoice = {
 	text: 'Say hi',
+	dialogue: 'Hi',
 	effects(state) {
 		return { ...state, John: { ...state.John, friendliness: state.John.friendliness + 1 } };
 	},
@@ -25,12 +25,12 @@ const SayHiChoice: MyGameChoice = {
 };
 
 const WhatDoYouWantOutcome: MyGameOutcome = () => function* () {
-	yield dialogue('You', 'What? What do you want?');
 	yield dialogue('John', 'Woah, hey, relax bud. I\'m not going to bite.');
 };
 
 const WhatDoYouWantChoice: MyGameChoice = {
 	text: 'What do you want?',
+	dialogue: 'What? What do you want?',
 	effects(state) {
 		return { ...state, John: { ...state.John, friendliness: state.John.friendliness - 1 } };
 	},

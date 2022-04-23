@@ -3,6 +3,7 @@ import {Event, ShowDialogueEvent} from '../types/Event';
 import {GameChoice} from '../types/GameChoice';
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {pause} from '../utils';
+import {dialogue as dialogueEvent} from '../types/Event';
 
 type DialogueWithID = {
 	id: number,
@@ -67,7 +68,7 @@ export const useEngine = <T,>(initialOutcome: Outcome<T>, initialState: T): [Dia
 	const selectChoice = (choice: GameChoice<T>) => {
 		setOutcome(choice.outcome);
 		setGameState(choice.effects(gameState));
-		setEvents([...events, {type: 'HIDE_CHOICES'}]);
+		setEvents([...events, dialogueEvent('You', choice.dialogue), {type: 'HIDE_CHOICES'}]);
 	};
 
 	return [dialogue, choices, showChoices, selectChoice];

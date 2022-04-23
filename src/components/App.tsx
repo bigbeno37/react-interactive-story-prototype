@@ -6,7 +6,7 @@ import {InitialGameState} from '../types/GameState';
 
 const APP_VERSION = 'v0.6.3';
 const ENGINE_VERSION = 'v1.1.0';
-const STORY_VERSION = 'v0.1.1';
+const STORY_VERSION = 'v0.2.0';
 
 export const App = () => {
 	const [dialogue, choices, showChoices, selectChoice] = useEngine(InitialOutcome, InitialGameState);

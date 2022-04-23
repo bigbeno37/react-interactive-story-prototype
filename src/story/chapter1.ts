@@ -24,8 +24,9 @@ const SayHiChoice: MyGameChoice = {
 	outcome: SayHiOutcome
 };
 
-const WhatDoYouWantOutcome: MyGameOutcome = () => function* () {
+const WhatDoYouWantOutcome: MyGameOutcome = (state) => function* () {
 	yield dialogue('John', 'Woah, hey, relax bud. I\'m not going to bite.');
+	yield* SayHiOutcome(state)();
 };
 
 const WhatDoYouWantChoice: MyGameChoice = {

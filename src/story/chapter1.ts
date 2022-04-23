@@ -1,7 +1,6 @@
 import {choices, dialogue} from '../types/Event';
 import {wait} from '../types/Outcome';
-import {GameChoice} from '../types/GameChoice';
-import {GameState, MyGameOutcome} from '../types/GameState';
+import {MyGameChoice, MyGameOutcome} from '../types/GameState';
 
 export const InitialOutcome: MyGameOutcome = () => function* () {
 	yield dialogue('John', 'Hey there!');
@@ -17,7 +16,7 @@ export const SayHiOutcome: MyGameOutcome = () => function* () {
 	yield dialogue('John', 'Nice weather outside, hey?');
 };
 
-const SayHiChoice: GameChoice<GameState> = {
+const SayHiChoice: MyGameChoice = {
 	text: 'Say hi',
 	effects(state) {
 		return { ...state, John: { ...state.John, friendliness: state.John.friendliness + 1 } };
@@ -30,7 +29,7 @@ const WhatDoYouWantOutcome: MyGameOutcome = () => function* () {
 	yield dialogue('John', 'Woah, hey, relax bud. I\'m not going to bite.');
 };
 
-const WhatDoYouWantChoice: GameChoice<GameState> = {
+const WhatDoYouWantChoice: MyGameChoice = {
 	text: 'What do you want?',
 	effects(state) {
 		return { ...state, John: { ...state.John, friendliness: state.John.friendliness - 1 } };

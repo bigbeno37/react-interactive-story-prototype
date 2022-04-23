@@ -1,4 +1,5 @@
 import {Outcome} from './Outcome';
+import {GameChoice} from './GameChoice';
 
 export type GameState = {
 	'John': {
@@ -13,3 +14,4 @@ export const InitialGameState: GameState = {
 };
 
 export type MyGameOutcome = Outcome<GameState>;
+export type MyGameChoice = GameChoice<GameState>;

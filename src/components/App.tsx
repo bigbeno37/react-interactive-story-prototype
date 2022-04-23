@@ -4,13 +4,19 @@ import {InitialOutcome} from '../story/chapter1';
 import {useEngine} from '../hooks/UseEngine';
 import {InitialGameState} from '../types/GameState';
 
-const CURRENT_VERSION = 'v0.6.0';
+const APP_VERSION = 'v1.0.0';
+const ENGINE_VERSION = 'v1.0.0';
+const STORY_VERSION = 'v0.1.0';
 
 export const App = () => {
 	const [dialogue, choices, showChoices, selectChoice] = useEngine(InitialOutcome, InitialGameState);
 
 	return <div className="h-full flex flex-col bg-gray-800 overflow-y-hidden">
-		<p className="absolute text-gray-600 left-4 top-4">{ CURRENT_VERSION }</p>
+		<div className="absolute text-gray-600 left-4 top-4">
+			<p>App: { APP_VERSION }</p>
+			<p>Engine: { ENGINE_VERSION }</p>
+			<p>Story: { STORY_VERSION }</p>
+		</div>
 		<div className="h-full self-center p-2 flex flex-col w-full xl:w-[1200px]">
 			<div className="flex flex-col-reverse overflow-y-auto" style={{ height: showChoices ? 'calc(100%-32rem)' : '100%' }}>
 				{ [...dialogue].reverse().map(({ id, event }) => ( <Dialogue key={id} name={event.name} text={event.text} /> )) }
